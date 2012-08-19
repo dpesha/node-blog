@@ -1,0 +1,64 @@
+extends layout
+block content
+	div#article.span8
+		fieldset			
+			.clearfix
+				label(for="title") Title
+				.input
+					input.input-xxlarge#title(type="text", name="blog[title]") 
+			.clearfix
+				label(for="blog") Blog
+				.input
+					textarea.input-xxlarge#blog(name="blog[body]",rows="7")	
+			.clearfix
+				label(for="tags") Tags
+				.input
+					input.input-xxlarge#tags(type="text", name="blog[tags]")
+			.clearfix
+				.input
+					input.input-xxlarge#state(type="checkbox", name="blog[state]") 
+					label(for="state", style="display:inline;")  Public
+			.actions
+				input.btn.btn-primary#publish(value="Publish!")
+				a.btn(href="/") Cancel
+	script(type="text/javascript")
+		$(document).ready(function() {
+			var id="#{id}";
+			if(id!='undefined'){
+				var oyw=new OpenYourWorld();
+				oyw.load(id,function(data){
+						$('#title').val(data[0]);
+						$('#blog').val(data[3]);
+						$('#tags').val(data[4]);
+						$('#state').prop('checked',data[5]);
+						$('#publish').unbind('click');
+						$('#publish').click(function(){
+							submit(id);
+						});
+				});			
+			}
+			else {
+				$('#publish').unbind('click');
+				$('#publish').click(function(){
+					submit();
+				});
+			}
+		});
+		function submit(id){
+			var oyw=new OpenYourWorld();
+			var blog={
+					title:$('#title').val(),
+					body:$('#blog').val(),
+					tags:$('#tags').val(),
+					state:$('#state').is(':checked')
+			}						
+			if(id){
+				oyw.put(id,{blog:blog},function(data){
+					window.location.replace('/');
+				});
+			} else {
+				oyw.post({blog:blog},function(data){
+					window.location.replace('/');
+				});
+			}
+		}

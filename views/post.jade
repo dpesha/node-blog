@@ -1,0 +1,88 @@
+extends layout
+block content
+	div#article.span8
+		h3#title
+		h6#author		
+		div#body
+		.admin
+			a(href="", id="edit") Edit
+			span 
+			a(href='javascript:void(0)', id="delete") Delete
+block comment
+	div#comment.span8
+		span#ccount.span12
+		div#commentlist.span12			
+		//- div#commenter.span2
+		//- div#commenttext.span6
+		span.span8 Leave a Comment
+			fieldset			
+				.clearfix
+					label(for="name") Name
+					.input
+						input.input-xlarge#name(type="text", name="comment[name]") 
+				.clearfix
+					label(for="email") Email
+					.input
+						input.input-xlarge#email(type="text", name="comment[email]") 
+				.clearfix
+					label(for="ctext") Comment
+					.input
+						textarea.input-xlarge#ctext(name="comment[body]",rows="4")	
+				.actions
+					input.btn.btn-primary#submit(value="Submit")
+					a.btn(href="/") Cancel			
+	script(type='text/javascript')
+		$(document).ready(function() {
+			var oyw=new OpenYourWorld();
+			var id=("#{id}");
+			oyw.load(id,function(data){
+				$('#title').html(data[0]);
+				$('#author').html(data[1]);
+				$('#author').append(", " + dateToYMD(new Date(data[2])));
+				$('#body').append(data[3]);
+				$('#edit').attr('href',window.location.href+'/edit');
+				$('#delete').click(function(){
+					showDialog(id);
+				});
+				$('#submit').click(function(){
+					submit(id);
+				});				
+				$('#ccount').append('{ ' + data[6].length + ' Comments }');
+				$.each(data[6],function(key,value){
+					$('#commentlist').append('<div><span class="span2">'+value.name+'</span><span class="span10">'+value.body+'</span></div>');
+				});	
+			});
+		});
+		function dateToYMD(date)
+		{
+			var d = date.getDate();
+			var m = date.getMonth()+1;
+			var y = date.getFullYear();
+			return '' + y +'-'+ (m<=9?'0'+m:m) +'-'+ (d<=9?'0'+d:d);
+		}
+		function showDialog(id){
+			if(confirm('Really, do you want to delete?')){
+				var oyw = new OpenYourWorld();
+				oyw.del(id,function(data){
+					window.location.replace('/');
+				});			
+			} else {
+				return false;
+			}
+		}
+		function submit(id){
+			var oyw=new OpenYourWorld();
+			var blog={
+					comments:{
+						name:$('#name').val(),
+						email:$('#email').val(),
+						body:$('#ctext').val()
+					}
+			}									
+			if(id){
+				oyw.put(id,{blog:blog},function(data){					
+				});
+			}			
+		}
+	
+	
