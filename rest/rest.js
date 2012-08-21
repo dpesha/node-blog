@@ -36,7 +36,8 @@ exports.viewEntry=function(req,res){
     	if (!err) {
       		return res.send(blog);
     	} else {
-      		return console.log(err);
+      		console.log(err);
+      		return res.send(err);
     	}
     });	
 };

@@ -7,13 +7,15 @@ var express = require('express')
   , routes = require('./routes/routes')
   , rest = require('./rest/rest')
   , http = require('http')
-  , path = require('path');
-
+  , path = require('path')
+  , expose = require('express-expose');
+  exports=bcrypt=require('bcrypt');
+  
 var app = express();
 
 // Support markdown
 exports= md = require("marked");
-
+var store= new express.session.MemoryStore;
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -21,6 +23,12 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({ 
+    key: 'secretkey',
+    secret: '34 secret34!',
+    store: store 
+  }));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '/public')));
@@ -30,21 +38,30 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+function authenticate(req,res,next){
+  if(req.session.user){
+    next();
+  } else {    
+    routes.error(req,res);
+  }
+}
 
 // URL Routes
 app.get('/', routes.index);
 app.get('/blog', routes.listBlogs);
-app.get('/blog/edit', routes.editBlog);
+app.get('/blog/login', routes.logIntoBlog);
+app.post('/blog/login',routes.userLogin);
+app.get('/blog/edit', authenticate, routes.editBlog);
 app.get('/blog/:id', routes.viewBlog);
-app.get('/blog/:id/edit', routes.editBlog);
+app.get('/blog/:id/edit', authenticate, routes.editBlog);
 
 
 // RESTFUL URL
 app.get('/entries', rest.listEntries);
-app.post('/entries', rest.newEntry);
+app.post('/entries', authenticate, rest.newEntry);
 app.get('/entries/:id', rest.viewEntry);
-app.put('/entries/:id', rest.updateEntry);
-app.del('/entries/:id', rest.deleteEntry);
+app.put('/entries/:id', authenticate, rest.updateEntry);
+app.del('/entries/:id', authenticate, rest.deleteEntry);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

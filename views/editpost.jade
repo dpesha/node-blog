@@ -1,5 +1,10 @@
 extends layout
+
 block content
+	script(type='text/javascript', src='/javascripts/lib/markitup/jquery.markitup.js')
+	script(type='text/javascript', src='/javascripts/lib/markitup/sets/markdown/set.js')
+	link(rel='stylesheet', type='text/css', href='/javascripts/lib/markitup/skins/markitup/style.css')
+	link(rel='stylesheet', type='text/css', href='/javascripts/lib/markitup/sets/markdown/style.css')
 	div#article.span8
 		fieldset			
 			.clearfix
@@ -23,6 +28,7 @@ block content
 				a.btn(href="/") Cancel
 	script(type="text/javascript")
 		$(document).ready(function() {
+			$('#blog').markItUp(mySettings);
 			var id="#{id}";
 			if(id!='undefined'){
 				var oyw=new OpenYourWorld();

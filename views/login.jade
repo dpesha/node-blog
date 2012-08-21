@@ -1,0 +1,18 @@
+extends layout
+block content
+	div#login.span8
+		div#error(style="color:red")!= message
+		form(method="post", action="/blog/login")
+			fieldset			
+				.clearfix
+					label(for="username") Username
+					.input
+						input.input-large#username(type="text", name="login[name]") 
+				.clearfix
+					label(for="password") Password
+					.input
+						input.input-large#password(type="password", name="login[pass]")			
+				.actions
+					input.btn.btn-primary#publish(type="submit", value="Submit")
+					a.btn(href="/") Cancel
+	

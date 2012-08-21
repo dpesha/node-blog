@@ -4,10 +4,11 @@ block content
 		h3#title
 		h6#author		
 		div#body
-		.admin
-			a(href="", id="edit") Edit
-			span 
-			a(href='javascript:void(0)', id="delete") Delete
+		- if(user)
+			.admin
+				a(href="", id="edit") Edit
+				span 
+				a(href='javascript:void(0)', id="delete") Delete
 block comment
 	div#comment.span8
 		span#ccount.span12
@@ -39,7 +40,7 @@ block comment
 				$('#title').html(data[0]);
 				$('#author').html(data[1]);
 				$('#author').append(", " + dateToYMD(new Date(data[2])));
-				$('#body').append(data[3]);
+				$('#body').append(marked(data[3]));
 				$('#edit').attr('href',window.location.href+'/edit');
 				$('#delete').click(function(){
 					showDialog(id);
