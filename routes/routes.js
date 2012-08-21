@@ -1,27 +1,28 @@
 require('../db-connect.js');
 var User = require('../app/models/User');
 
+
 exports.index = function(req, res){
-	res.render('index', { title: 'Open Your World!'});	
+	res.render('index', { title : title });	
 };
 
 exports.listBlogs = function(req, res){
-	res.render('index', { title: 'Open Your World!'});	
+	res.render('index', { title: title });	
 };
 
 exports.editBlog=function(req,res){
 	if(req.params.id){
-		res.render('editpost',{title:'Open Your World!', id:req.params.id});
+		res.render('editpost',{ title: title, id: req.params.id });
 	} else { 
-		res.render('editpost',{title:'Open Your World!', id:'undefined'});
+		res.render('editpost',{ title: title, id: 'undefined' });
 	}
 };
 exports.viewBlog=function(req,res){
-	res.render('post', {title:'Open Your World!',id:req.params.id,md:md,user:req.session.user});	
+	res.render('post', { title: title, id: req.params.id, user: req.session.user });	
 }
 
 exports.logIntoBlog=function(req,res){
-	res.render('login', {title:'Login!',message:''});	
+	res.render('login', { title: 'Login!', message:'' });	
 }
 
 exports.userLogin=function(req,res){
@@ -30,7 +31,7 @@ exports.userLogin=function(req,res){
 	User.findOne({'name':user},function(err,result){
 		
 		if(result===null){
-			res.render('login',{title:'Login!',message:'Invalid Credentials'})
+			res.render('login',{ title: 'Login!', message: 'Invalid Credentials' })
 		} else {			
 			bcrypt.compare(pass, result.pass, function(err, data) {
     			if(data){
@@ -38,7 +39,7 @@ exports.userLogin=function(req,res){
     				res.redirect('/');
     			}
     			else {
-    				res.render('login',{title:'Login!',message:'Invalid Credentials'})
+    				res.render('login',{ title: 'Login!', message: 'Invalid Credentials' })
     			}
 			});
 		}		
@@ -46,7 +47,8 @@ exports.userLogin=function(req,res){
 }
 
 exports.error=function(req,res){
-	res.render('error', {title: 'Ooops!', message:'Not allowed!'});
+	res.render('error', { title: 'Ooops!', message: 'Not allowed!' });
 }
 
-
+exports = config = require('../config/base');
+var title=config.blog.title;

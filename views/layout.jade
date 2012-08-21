@@ -12,24 +12,20 @@ html
 		script(type='text/javascript', src='/javascripts/lib/marked.js')
 		
 	body
-		.container-fluid.row-fluid			
+		div#wrap.container-fluid.row-fluid			
 			block header
-				div#header.span12
-					h1= title
-			block navigation
-				div#nav.span3	
-						ul
-							li
-								a(href="#") About
+				div#header.span8
+					h1
+						a(href='/')= title					
 			div#main
 				block content				
 				block comment
 			block footer
-				div#footer.span12
-					span Find me on 
-					a(href='#') Google+ 
-					, 
-					a(href='#') GitHub 
-					, 
-					a(href='#') Twitter
+				div#footer.span8
+					div Hey, I am <b>Dipesh</b>, newb on <b>Software & Life</b>. Find me on 
+						a(href='#') Google+ 
+						, 
+						a(href='#') GitHub 
+						, 
+						a(href='#') Twitter
 

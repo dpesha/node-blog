@@ -2,7 +2,7 @@ extends layout
 block content
 	div#article.span8
 		h3#title
-		h6#author		
+		h6#date		
 		div#body
 		- if(user)
 			.admin
@@ -12,10 +12,8 @@ block content
 block comment
 	div#comment.span8
 		span#ccount.span12
-		div#commentlist.span12			
-		//- div#commenter.span2
-		//- div#commenttext.span6
-		span.span8 Leave a Comment
+		dl#commentlist			
+		div#commentbox.span8 Leave a Comment
 			fieldset			
 				.clearfix
 					label(for="name") Name
@@ -30,7 +28,8 @@ block comment
 					.input
 						textarea.input-xlarge#ctext(name="comment[body]",rows="4")	
 				.actions
-					input.btn.btn-primary#submit(value="Submit")
+					input.btn.btn-primary.input-small#submit(value="Submit")
+					span  
 					a.btn(href="/") Cancel			
 	script(type='text/javascript')
 		$(document).ready(function() {
@@ -38,8 +37,7 @@ block comment
 			var id=("#{id}");
 			oyw.load(id,function(data){
 				$('#title').html(data[0]);
-				$('#author').html(data[1]);
-				$('#author').append(", " + dateToYMD(new Date(data[2])));
+				$('#date').append(dateToYMD(new Date(data[2])));
 				$('#body').append(marked(data[3]));
 				$('#edit').attr('href',window.location.href+'/edit');
 				$('#delete').click(function(){
@@ -50,7 +48,7 @@ block comment
 				});				
 				$('#ccount').append('{ ' + data[6].length + ' Comments }');
 				$.each(data[6],function(key,value){
-					$('#commentlist').append('<div><span class="span2">'+value.name+'</span><span class="span10">'+value.body+'</span></div>');
+					$('#commentlist').append('<dt>'+value.name+'</dt><dd>'+value.body+'</dd>');
 				});	
 			});
 		});
@@ -81,7 +79,8 @@ block comment
 					}
 			}									
 			if(id){
-				oyw.put(id,{blog:blog},function(data){					
+				oyw.put(id,{blog:blog},function(data){
+					window.location.reload();					
 				});
 			}			
 		}

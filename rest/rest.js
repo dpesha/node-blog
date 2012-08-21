@@ -19,7 +19,7 @@ exports.listEntries=function(req,res){
 exports.newEntry=function(req,res){
 	var blog = new Blog(req.body.blog);
 	blog.state = (req.body.blog.state === 'true');
-	blog.author.username="Dipesh Acharya";
+	blog.author.username=config.blog.author;
 	return blog.save(function (err){	  
 	    if (!err) {
 	      console.log('created entry');

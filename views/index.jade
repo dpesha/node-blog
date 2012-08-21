@@ -1,17 +1,15 @@
 extends layout
 block content
 	div#article.span8
-		#listblogs
+		ul#listblogs
 	script(type='text/javascript')
 		$(document).ready(function() {
 			var oyw=new OpenYourWorld();
 			oyw.loadAll(function(data){
 				console.log(data);
 				$.each(data,function(key,value){
-					$('#listblogs').append(dateToYMD(new Date(value.created)));
-					$('#listblogs').append(' ');
-					$('#listblogs').append('<a href="/blog/' + value._id + '">' + value.title + '</a>');
-					$('#listblogs').append('<br/>');
+					$('#listblogs').append('<li><span>' + dateToYMD(new Date(value.created)) + ': </span><a href="/blog/' + value._id + '">' + value.title + '</a></li>');
+					
 				});				
 			});
 		});
