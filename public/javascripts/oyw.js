@@ -49,5 +49,11 @@ OpenYourWorld.prototype ={
 					callback(data);				
 			}
 		});
+	},
+	postComment:function(id,postdata,callback){
+		$.post('/entries/'+id+'/comments',postdata, function(data){
+			if(callback)
+				callback(data);	
+		});		
 	}
 }

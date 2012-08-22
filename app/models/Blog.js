@@ -1,8 +1,9 @@
 var CommentSchema = new Schema({
   name: String, 
   body: String,
-  email: String,
-  created: Date
+  url: String,
+  created: Date,
+  comments:[CommentSchema]
 });
 
 var BlogSchema = new Schema({  

@@ -11,11 +11,16 @@ body {
 }
 
 #wrap {
-	margin:0 15%
+	margin:0;
+	padding:0;
+}
+
+#wrap > * {
+	padding:10px 20%;
 }
 
 #header {
-	background-color:rgba(185, 72, 72, 0.98);
+	background-color:rgba(185, 72, 72, 0.98);	
 }
 
 #header h1 a {
@@ -27,16 +32,14 @@ body {
 	font-size: 14px;
 	color: rgba(0,0,0,0.6);
 	background-color: rgba(236,162,162, 0.6);
-	/*text-shadow:0 1px rgba(255,255,255,0.75);*/
 }
 
 
 #header,#footer {	
-	padding:10px 10px;	
+	width:100%;	
 }
 
 #article, #comment {
-	font-size:16px;
 	padding:10px 20px;
 	background-color:rgba(255, 255, 255, 0.9);
 }
@@ -73,12 +76,9 @@ body {
 }
 
 #listblogs li {
-	font-size:20px;
 	list-style:none;
 	padding:5px 0;
 }
-
-
 
 #commentbox {
 	margin-left:0px;
@@ -87,12 +87,21 @@ body {
 @media only screen and (max-width: 680px) { 
 
 	body {
-    	margin: 0 1px;
+    	margin: 0;
+    	padding: 0;
+    	font-size:14px;
   	}
 
-  	#wrap {
-		margin:0 auto;
+  	#wrap > * {
+		padding:10px 2%;
+	}
 
-	}	
+	#main {
+		padding:0;
+	}
 
+
+	#footer {
+		font-size: 12px;
+	}
 }

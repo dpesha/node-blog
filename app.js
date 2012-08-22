@@ -51,17 +51,23 @@ app.get('/', routes.index);
 app.get('/blog', routes.listBlogs);
 app.get('/blog/login', routes.logIntoBlog);
 app.post('/blog/login',routes.userLogin);
-app.get('/blog/edit', authenticate, routes.editBlog);
+// TODO:authenticate
+app.get('/blog/edit', routes.editBlog);
 app.get('/blog/:id', routes.viewBlog);
-app.get('/blog/:id/edit', authenticate, routes.editBlog);
+// TODO:authenticate
+app.get('/blog/:id/edit', routes.editBlog);
 
 
 // RESTFUL URL
 app.get('/entries', rest.listEntries);
-app.post('/entries', authenticate, rest.newEntry);
+// TODO:authenticate
+app.post('/entries', rest.newEntry);
 app.get('/entries/:id', rest.viewEntry);
-app.put('/entries/:id', authenticate, rest.updateEntry);
-app.del('/entries/:id', authenticate, rest.deleteEntry);
+// TODO:authenticate
+app.put('/entries/:id', rest.updateEntry);
+// TODO:authenticate
+app.del('/entries/:id', rest.deleteEntry);
+app.post('/entries/:id/comments', rest.addComments);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
