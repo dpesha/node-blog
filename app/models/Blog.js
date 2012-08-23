@@ -19,4 +19,5 @@ var BlogSchema = new Schema({
     comments:[CommentSchema]
 });
 
-var exports = module.exports = Blog = mongoose.model('Blog', BlogSchema);
+var exports = module.exports.Blog = Blog = mongoose.model('Blog', BlogSchema);
+var exports = module.exports.Comment = Comment = mongoose.model('Comment', CommentSchema);

@@ -1,5 +1,6 @@
 require('../db-connect.js');
-var Blog = require('../app/models/Blog');
+var Blog = require('../app/models/Blog').Blog;
+var Comment = require('../app/models/Blog').Comment;
 
 // TODO Add Authentication
 
@@ -50,14 +51,7 @@ exports.updateEntry=function(req,res){
 		for(var key in req.body.blog){
 			if(req.body.blog.hasOwnProperty(key)){
 				if(key === 'state'){
-					blog[key]=(req.body.blog[key] === 'true');
-				// } else if(key === 'comments'){
-				// 	blog[key].push(req.body.blog[key]); 
-				// 	for(var ke in req.body.blog[key]){
-				// 		if(ke==='comments'){
-				// 			blog[key][0][ke].push(req.body.blog[key][ke]);
-				// 		}						
-				// 	}
+					blog[key]=(req.body.blog[key] === 'true');				
 				} else {
 					blog[key]=req.body.blog[key];
 				}
@@ -89,14 +83,12 @@ exports.deleteEntry=function(req,res){
   	});
 };
 
-//Add Comments
+// Update Comment
 exports.addComments=function(req,res){
-	
 	return Blog.findById(req.params.id, function (err, blog) {
-		var path=req.body.comment.path;
-		var comment=req.body.comment.data;
-						
-		Blog.update({ _id : blog._id }, { '$set': {'comments.1': {name:comment.name,url:comment.url,body:comment.body}}},function(err){
+		var update={};
+		update[req.body.comment.path]=new Comment(req.body.comment.data);
+		Blog.update({ _id : blog._id }, { '$push': update},function(err){
 			if (!err) {
         		console.log("added comments");
         		return res.send(blog);

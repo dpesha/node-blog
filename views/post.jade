@@ -14,7 +14,7 @@ block comment
 		span#ccount.span12
 		dl#commentlist			
 		div#commentbox.span8 Leave a Comment
-			fieldset			
+			fieldset#field			
 				.clearfix
 					label(for="name") Name
 					.input
@@ -28,9 +28,7 @@ block comment
 					.input
 						textarea.input-xlarge#ctext(name="comment[body]",rows="4")	
 				.actions
-					input.btn.btn-primary.input-small#submit(value="Submit")
-					span  
-					a.btn(href="/") Cancel			
+					input.btn.btn-danger.input-small#submit(value="Submit")							
 	script(type='text/javascript')
 		var id="";
 		$(document).ready(function() {
@@ -45,50 +43,57 @@ block comment
 					showDialog(id);
 				});
 				$('#submit').click(function(){
-					var path="comments." + data[6].length;
-					submitComment(id,path);
+					var path="comments";
+					sendComment($(this).parent().parent().parent(),id,path);
 				});				
 				$('#ccount').append('{ ' + data[6].length + ' Comments }');
 				populateComments($('#commentlist'),data[6], "comments");
-					
 			});
 		});
-		function submitComment(id,path){
-			
+		function sendComment (parent, id,path){			
 			var oyw=new OpenYourWorld();
+			var pparent='#' + $(parent).attr('id');
+			
 			var data={
-				name:$('#name').val(),
-				url:$('#url').val(),
-				body:$('#ctext').val()
+				name:$(pparent +' #name').val(),
+				url:$(pparent +' #url').val(),
+				body:$(pparent + ' #ctext').val()
 			}
 			var comment={
 					path:path,
 					data:data									
-			}									
-			
-			// oyw.postComment(id,{comment:comment},function(data){
-			// 	window.location.reload();					
-			// });
-						
+			}			
+			oyw.postComment(id,{comment:comment},function(data){
+				window.location.reload();					
+			});						
 		}
+		function showReplyForm (parent,id,path,show){
+			if(show){
+				$(parent).children('a').after($("#commentbox > fieldset").clone());
+				var submit=parent.children('#field').children('.actions').children('#submit');
+				$(submit).click(function(){					
+					sendComment($(this).parent().parent(),id,path);
+				});				
+			} else {
+				$(parent).children('fieldset').remove();
+			}					
+		}		
 		function populateComments(parent, comments, ref ){
-			
 			for(var i=0;i<comments.length; i++){
 				var reff = ref + '.' + i ;
-				var refff = reff + '.commments';
-				var reffff= refff + '.' + ((comments[i].comments!==undefined) ? comments[i].comments.length:0);
-				var a='<dt><a href="'+comments[i].url+'">'+comments[i].name+'</a></dt><dd>'+comments[i].body+'</dd><dd class="reply"></dd>';
-				parent.append(a);
-						
-				$('<a href="#">Reply</a>').click({param:reffff},function(e) {
+				var refff = reff + '.comments';
+				var commentElement='<dt><a href="'+comments[i].url+'">'+comments[i].name+'</a></dt><dd>'+comments[i].body+'</dd><dd class="reply"></dd>';
+				parent.append(commentElement);
+				
+				// Pass reference path as param
+				var element=parent.children('dd.reply').last(); 		
+				$('<a href="#">Reply</a>').click({param:refff,elem:element,show:true},function(e) {
 					e.preventDefault();
-					submitComment(id,e.data.param);
+					showReplyForm(e.data.elem,id,e.data.param,e.data.show);
+					e.data.show=!(e.data.show);
 				}).appendTo(parent.children('dd.reply').last());
-
-				if(comments[i].comments !== undefined){
-					for(var j=0;j<comments[i].comments.length;j++){						
-						populateComments(parent.children('dd.reply'),comments[i].comments, refff);
-					}
+				if(comments[i].comments.length > 0){					
+						populateComments(parent.children('dd.reply').last(),comments[i].comments, refff);
 				}
 			}
 		}
