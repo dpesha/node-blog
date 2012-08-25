@@ -16,17 +16,20 @@ block comment
 		div#commentbox.span8 Leave a Comment
 			fieldset#field			
 				.clearfix
-					label(for="name") Name
+					label(for="name") Name 
+						span.mandatory *
 					.input
-						input.input-xlarge#name(type="text", name="comment[name]") 
+						input.input-xlarge#name(type="text", name="comment[name]")
 				.clearfix
-					label(for="url") Url
+					label(for="url") Url 
+						span.mandatory *
 					.input
-						input.input-xlarge#url(type="text", name="comment[url]") 
+						input.input-xlarge#url(type="text", name="comment[url]")
 				.clearfix
-					label(for="ctext") Comment
+					label(for="ctext") Comment 
+						span.mandatory *
 					.input
-						textarea.input-xlarge#ctext(name="comment[body]",rows="4")	
+						textarea.input-xlarge#ctext(name="comment[body]",rows="4")
 				.actions
 					input.btn.btn-danger.input-small#submit(value="Submit")							
 	script(type='text/javascript')
@@ -53,23 +56,33 @@ block comment
 		function sendComment (parent, id,path){			
 			var oyw=new OpenYourWorld();
 			var pparent='#' + $(parent).attr('id');
-			
-			var data={
-				name:$(pparent +' #name').val(),
-				url:$(pparent +' #url').val(),
-				body:$(pparent + ' #ctext').val()
-			}
-			var comment={
-					path:path,
-					data:data									
-			}			
-			oyw.postComment(id,{comment:comment},function(data){
-				window.location.reload();					
-			});						
+			var name = $(pparent +' #name').val().trim();
+			var url = $(pparent +' #url').val().trim();
+			var body = $(pparent +' #ctext').val().trim();
+			if( ((name.length > 0) &&  (url.length > 0) && (body.length > 0)) ) {
+				var data={
+					name:name,
+					url:url,
+					body:body
+				}
+				var comment={
+						path:path,
+						data:data									
+				}			
+				oyw.postComment(id,{comment:comment},function(data){
+					window.location.reload();					
+				});
+			}						
 		}
 		function showReplyForm (parent,id,path,show){
 			if(show){
 				$(parent).children('a').after($("#commentbox > fieldset").clone());
+				// clear input field after cloning
+				var pparent=parent.children('#field').children('.clearfix').children('.input');
+				pparent.children('#name').val('');
+				pparent.children('#url').val('');
+				pparent.children('#ctext').val('');
+				
 				var submit=parent.children('#field').children('.actions').children('#submit');
 				$(submit).click(function(){					
 					sendComment($(this).parent().parent(),id,path);

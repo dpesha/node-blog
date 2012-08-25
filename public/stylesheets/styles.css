@@ -71,6 +71,10 @@ body {
 	padding:5px 0;
 }
 
+.mandatory {
+	color:red;
+}
+
 
 /*******************************/
 
