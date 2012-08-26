@@ -7,11 +7,11 @@ var express = require('express')
   , routes = require('./routes/routes')
   , rest = require('./rest/rest')
   , http = require('http')
-  , path = require('path')
-  , expose = require('express-expose');
+  , path = require('path');
   exports=bcrypt=require('bcrypt');
   
 var app = express();
+
 
 // Support markdown
 exports= md = require("marked");
@@ -32,8 +32,9 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '/public')));
-  app.use(express.favicon(__dirname + '/public/images/favicon.ico',{ maxAge: 2592000000 }));
+  
 });
+
 
 app.configure('development', function(){
   app.use(express.errorHandler());
