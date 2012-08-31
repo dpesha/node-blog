@@ -34,8 +34,8 @@ exports.newEntry=function(req,res){
 // READ
 exports.viewEntry=function(req,res){
 	return Blog.findById(req.params.id, function (err, blog) {
-    	if (!err) {
-      		return res.send(blog);
+		if (!err) {
+    		return res.send(blog);
     	} else {
       		console.log(err);
       		return res.send(err);

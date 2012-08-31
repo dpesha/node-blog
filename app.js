@@ -53,21 +53,16 @@ app.get('/', routes.index);
 app.get('/blog', routes.listBlogs);
 app.get('/blog/login', routes.logIntoBlog);
 app.post('/blog/login',routes.userLogin);
-// TODO:authenticate
 app.get('/blog/edit', authenticate, routes.editBlog);
 app.get('/blog/:id', routes.viewBlog);
-// TODO:authenticate
 app.get('/blog/:id/edit', authenticate, routes.editBlog);
 
 
 // RESTFUL URL
 app.get('/entries', rest.listEntries);
-// TODO:authenticate
 app.post('/entries', authenticate, rest.newEntry);
 app.get('/entries/:id', rest.viewEntry);
-// TODO:authenticate
 app.put('/entries/:id', authenticate, rest.updateEntry);
-// TODO:authenticate
 app.del('/entries/:id', authenticate, rest.deleteEntry);
 app.post('/entries/:id/comments', rest.addComments);
 

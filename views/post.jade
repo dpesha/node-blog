@@ -1,4 +1,8 @@
 extends layout
+block script
+	script(type='text/javascript', src='/javascripts/lib/marked.js')	
+	script(type='text/javascript', src='/javascripts/app/post.js')
+
 block content
 	div#article.span12
 		h3#title
@@ -8,7 +12,7 @@ block content
 			.admin
 				a(href="", id="edit") Edit
 				span 
-				a(href='javascript:void(0)', id="delete") Delete
+				a(href='#', id="delete") Delete
 block comment
 	div#comment.span12
 		span#ccount.span12
@@ -31,103 +35,4 @@ block comment
 					.input
 						textarea.input-xlarge#ctext(name="comment[body]",rows="4")
 				.actions
-					input.btn.btn-danger.input-small#submit(value="Submit")							
-	script(type='text/javascript')
-		var id="";
-		$(document).ready(function() {
-			var oyw=new OpenYourWorld();
-			id=("#{id}");
-			oyw.load(id,function(data){
-				$('#title').html(data[0]);
-				$('#date').append(dateToYMD(new Date(data[2])));
-				$('#body').append(marked(data[3]));
-				$('#edit').attr('href',window.location.href+'/edit');
-				$('#delete').click(function(){
-					showDialog(id);
-				});
-				$('#submit').click(function(){
-					var path="comments";
-					sendComment($(this).parent().parent().parent(),id,path);
-				});				
-				$('#ccount').append('{ ' + data[6].length + ' Comments }');
-				populateComments($('#commentlist'),data[6], "comments");
-			});
-		});
-		function sendComment (parent, id,path){			
-			var oyw=new OpenYourWorld();
-			var pparent='#' + $(parent).attr('id');
-			var name = $(pparent +' #name').val().trim();
-			var url = $(pparent +' #url').val().trim();
-			var body = $(pparent +' #ctext').val().trim();
-			if( ((name.length > 0) &&  (url.length > 0) && (body.length > 0)) ) {
-				var data={
-					name:name,
-					url:url,
-					body:body
-				}
-				var comment={
-						path:path,
-						data:data									
-				}			
-				oyw.postComment(id,{comment:comment},function(data){
-					window.location.reload();					
-				});
-			}						
-		}
-		function showReplyForm (parent,id,path,show){
-			if(show){
-				$(parent).children('a').after($("#commentbox > fieldset").clone());
-				// clear input field after cloning
-				var pparent=parent.children('#field').children('.clearfix').children('.input');
-				pparent.children('#name').val('');
-				pparent.children('#url').val('');
-				pparent.children('#ctext').val('');
-				
-				var submit=parent.children('#field').children('.actions').children('#submit');
-				$(submit).click(function(){					
-					sendComment($(this).parent().parent(),id,path);
-				});				
-			} else {
-				$(parent).children('fieldset').remove();
-			}					
-		}		
-		function populateComments(parent, comments, ref ){
-			for(var i=0;i<comments.length; i++){
-				var reff = ref + '.' + i ;
-				var refff = reff + '.comments';
-				var commentElement='<dt><a href="'+comments[i].url+'">'+comments[i].name+'</a></dt><dd>'+comments[i].body+'</dd><dd class="reply"></dd>';
-				parent.append(commentElement);
-				
-				// Pass reference path as param
-				var element=parent.children('dd.reply').last(); 		
-				$('<a href="#">Reply</a>').click({param:refff,elem:element,show:true},function(e) {
-					e.preventDefault();
-					showReplyForm(e.data.elem,id,e.data.param,e.data.show);
-					e.data.show=!(e.data.show);
-				}).appendTo(parent.children('dd.reply').last());
-				if(comments[i].comments.length > 0){					
-						populateComments(parent.children('dd.reply').last(),comments[i].comments, refff);
-				}
-			}
-		}
-		function dateToYMD(date)
-		{
-			var d = date.getDate();
-			var m = date.getMonth()+1;
-			var y = date.getFullYear();
-			return '' + y +'-'+ (m<=9?'0'+m:m) +'-'+ (d<=9?'0'+d:d);
-		}
-		function showDialog(id){
-			if(confirm('Really, do you want to delete?')){
-				var oyw = new OpenYourWorld();
-				oyw.del(id,function(data){
-					window.location.replace('/');
-				});			
-			} else {
-				return false;
-			}
-		}
-		
-		
-	
-	
+					input.btn.btn-danger.input-small#submit(value="Submit")
