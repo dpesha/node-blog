@@ -14,7 +14,7 @@ exports.editBlog=function(req,res){
 	if(req.params.id){
 		res.render('editpost',{ title: title, id: req.params.id });
 	} else { 
-		res.render('editpost',{ title: title, id: 'undefined' });
+		res.render('editpost',{ title: title, id: undefined });
 	}
 };
 exports.viewBlog=function(req,res){

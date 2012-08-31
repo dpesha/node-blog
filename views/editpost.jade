@@ -1,8 +1,8 @@
 extends layout
-
 block content
 	script(type='text/javascript', src='/javascripts/lib/markitup/jquery.markitup.js')
 	script(type='text/javascript', src='/javascripts/lib/markitup/sets/markdown/set.js')
+	script(type='text/javascript', src='/javascripts/app/editpost.js')
 	link(rel='stylesheet', type='text/css', href='/javascripts/lib/markitup/skins/markitup/style.css')
 	link(rel='stylesheet', type='text/css', href='/javascripts/lib/markitup/sets/markdown/style.css')
 	div#article.span12
@@ -26,45 +26,5 @@ block content
 			.actions
 				input.btn.btn-danger#publish(value="Publish!")
 				a.btn(href="/") Cancel
-	script(type="text/javascript")
-		$(document).ready(function() {
-			$('#blog').markItUp(mySettings);
-			var id="#{id}";
-			if(id!='undefined'){
-				var oyw=new OpenYourWorld();
-				oyw.load(id,function(data){
-						$('#title').val(data[0]);
-						$('#blog').val(data[3]);
-						$('#tags').val(data[4]);
-						$('#state').prop('checked',data[5]);
-						$('#publish').unbind('click');
-						$('#publish').click(function(){
-							submit(id);
-						});
-				});			
-			}
-			else {
-				$('#publish').unbind('click');
-				$('#publish').click(function(){
-					submit();
-				});
-			}
-		});
-		function submit(id){
-			var oyw=new OpenYourWorld();
-			var blog={
-					title:$('#title').val(),
-					body:$('#blog').val(),
-					tags:$('#tags').val(),
-					state:$('#state').is(':checked')
-			}						
-			if(id){
-				oyw.put(id,{blog:blog},function(data){
-					window.location.replace('/');
-				});
-			} else {
-				oyw.post({blog:blog},function(data){
-					window.location.replace('/');
-				});
-			}
-		}
+			script(type="text/javascript")
+				OYW.App.Post.init("#{id}");

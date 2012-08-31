@@ -3,9 +3,9 @@ OYW.App = OYW.App || {};
 OYW.App.Post = (function() {
 
 	var id, oyw;
-	var init = function() {
+	var init = function(idd) {
 			oyw = new OpenYourWorld();
-			id = document.location.pathname.split("/")[2];
+			id = idd;
 			showBlog();
 		};
 
@@ -116,7 +116,7 @@ OYW.App.Post.Comment = function(parent, path) {
 	this.replyElement = $(document.createElement('dd'));
 	this.replyLinkElement = $(document.createElement('a'));
 	this.childElement = $(document.createElement('dd'));
-	this.wrapElement = $(document.createElement('div'));	
+	this.wrapElement = $(document.createElement('div'));
 
 }
 
@@ -141,19 +141,21 @@ OYW.App.Post.Comment.prototype.init = function(commenterurl, commenter, body) {
 	this.parent.append(this.wrapElement);
 
 	var that = this;
-	this.replyLinkElement.click({show:true},function(e) {
+	this.replyLinkElement.click({
+		show: true
+	}, function(e) {
 		e.preventDefault();
-		
-		if(e.data.show) {
+
+		if (e.data.show) {
 			$(this).after($("#commentbox  #field").clone());
 			this.CommentForm = new OYW.App.Post.CommentForm($(this).next(), that.path);
 			this.CommentForm.init();
-			this.CommentForm.clear();			
+			this.CommentForm.clear();
 		} else {
 			$(this).next().remove();
-			this.CommentForm=null;		
+			this.CommentForm = null;
 		}
-		e.data.show=!e.data.show;
+		e.data.show = !e.data.show;
 	});
 }
 
@@ -204,6 +206,5 @@ OYW.App.Post.CommentForm.prototype.clear = function() {
 $(function() {
 	OYW.App.Post.Content.init();
 	OYW.App.Post.CommentList.init();
-	OYW.App.Post.init();
-
+	//OYW.App.Post.init();
 });
