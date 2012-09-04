@@ -13,7 +13,7 @@ li {
 body {
 	height:100%;
 	color:rgba(54,54,54,0.99);
-    font: 18px "Andika", sans-serif;
+    font: 16px "Andika", sans-serif;
     -webkit-transition: all 500ms ease-in-out; 
     background-image:url('/images/brillant.png');  
 }
