@@ -2,10 +2,18 @@ html, body {
   	height:100%;
 }
 
+ul {
+	padding:10px 10px;
+}
+
+li {
+	font-size:14px;
+	line-height: 24px;
+}
 body {
 	height:100%;
-	color:rgba(54,54,54,0.9);
-    font: 18px "Andika", sans-serif;
+	color:rgba(54,54,54,0.99);
+    font: 16px "Andika", sans-serif;
     -webkit-transition: all 500ms ease-in-out; 
     background-image:url('/images/brillant.png');  
 }
@@ -115,9 +123,8 @@ dd > a {
 
 	body {
     	margin: 0;
-    	padding: 0;
-    	font-size:14px;
-  	}
+    	padding: 0;    	
+  	}  	
 
   	#wrap > * {
 		padding:10px 2%;
