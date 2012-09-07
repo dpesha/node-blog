@@ -2,12 +2,11 @@ require('../db-connect.js');
 var Blog = require('../app/models/Blog').Blog;
 var Comment = require('../app/models/Blog').Comment;
 
-// TODO Add Authentication
 
 //READ
 exports.listEntries=function(req,res){
 	
-	return Blog.find({'state':true},function (err, blogs) {
+	return Blog.find({'state':true}).sort('created',-1).exec(function (err, blogs){
 		if (!err) {
 	    	return res.send(blogs);
 	    } else {
