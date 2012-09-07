@@ -18,6 +18,10 @@ body {
     background-image:url('/images/brillant.png');  
 }
 
+#body{
+	padding-top:20px;
+}
+
 #wrap {
 	margin:0;
 	padding:0;
