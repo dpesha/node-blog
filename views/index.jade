@@ -2,6 +2,13 @@ extends layout
 block script
 	script(type='text/javascript', src='/javascripts/app/index.js')
 	
-block content	
+block content
+	div#article.span12
+		- if(user)
+				.admin
+					a(href="/blog/edit") Edit
+					span 
+					a(href='/blog/logout') Logout	
 	div#article.span12
 		ul#listblogs
+

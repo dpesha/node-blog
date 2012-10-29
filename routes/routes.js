@@ -3,11 +3,11 @@ var User = require('../app/models/User');
 
 
 exports.index = function(req, res){
-	res.render('index', { title : title });	
+	res.render('index', { title : title, user: req.session.user });	
 };
 
 exports.listBlogs = function(req, res){
-	res.render('index', { title: title });	
+	res.render('index', { title: title, user: req.session.user });	
 };
 
 exports.editBlog=function(req,res){
@@ -23,6 +23,13 @@ exports.viewBlog=function(req,res){
 
 exports.logIntoBlog=function(req,res){
 	res.render('login', { title: 'Login!', message:'' });	
+}
+
+exports.logout=function(req,res){
+	if(req.session.user){
+		req.session.user=null;		
+	}	
+	res.redirect('/');
 }
 
 exports.userLogin=function(req,res){

@@ -3,16 +3,25 @@ var Blog = require('../app/models/Blog').Blog;
 var Comment = require('../app/models/Blog').Comment;
 
 
-//READ
+//READ all entries
 exports.listEntries=function(req,res){
-	
-	return Blog.find({'state':true}).sort('created',-1).exec(function (err, blogs){
+	if(req.session.user){
+		return Blog.find().sort('created',-1).exec(function (err, blogs){
 		if (!err) {
 	    	return res.send(blogs);
 	    } else {
 	    	return console.log(err);
 	    }
 	});
+	} else {
+		return Blog.find({'state':true}).sort('created',-1).exec(function (err, blogs){
+			if (!err) {
+		    	return res.send(blogs);
+		    } else {
+		    	return console.log(err);
+		    }
+		});
+	}
 };
 
 //CREATE

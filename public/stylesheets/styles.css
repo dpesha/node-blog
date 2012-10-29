@@ -54,6 +54,7 @@ body {
 #article, #comment {
 	padding:10px 20px;
 	background-color:rgba(255, 255, 255, 0.9);
+	margin-left:0px;
 }
 
 #comment, #footer {

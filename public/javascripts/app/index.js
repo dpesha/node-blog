@@ -25,7 +25,7 @@ OYW.App.Index.View = (function($) {
     }
 
     function listBlogs(date, id, title) {
-        list.append('<li><span>' + OYW.Utils.dateToYMD(new Date(date)) + ': </span><a href="/blog/' + id + '">' + title + '</a></li>');
+        list.append('<li><span>' + OYW.Utils.dateToYMD(new Date(date)) + ' : </span><a href="/blog/' + id + '">' + title + '</a></li>');
     }
 
     return {

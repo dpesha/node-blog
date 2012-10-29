@@ -53,9 +53,11 @@ app.get('/', routes.index);
 app.get('/blog', routes.listBlogs);
 app.get('/blog/login', routes.logIntoBlog);
 app.post('/blog/login',routes.userLogin);
+app.get('/blog/logout', routes.logout);
 app.get('/blog/edit', authenticate, routes.editBlog);
 app.get('/blog/:id', routes.viewBlog);
 app.get('/blog/:id/edit', authenticate, routes.editBlog);
+
 
 
 // RESTFUL URL
